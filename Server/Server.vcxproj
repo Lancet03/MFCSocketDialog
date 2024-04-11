@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{96895FBE-8B25-4515-8B96-B80435E9BE0F}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>Socket</RootNamespace>
+    <RootNamespace>Server</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Server</ProjectName>
   </PropertyGroup>
