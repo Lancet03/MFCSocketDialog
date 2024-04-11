@@ -110,11 +110,7 @@ BOOL CClientDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	
-
-
-	//this->hEvent = hEvent;
-	//this->hMemMap = hMemMap;
-	//this->mmap = mmap;
+	this->m_timerID = SetTimer(1, 100, NULL);
 
 	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"Event");
 	if (this->hEvent == NULL)
@@ -125,9 +121,8 @@ BOOL CClientDlg::OnInitDialog()
 	}
 
 	this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"MMap");
-	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096);
+	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096); // ѕочему-то нельз€ выставить значение больше, чем 4096
 
-	this->m_timerID = SetTimer(1, 100, NULL);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -199,7 +194,6 @@ void CClientDlg::OnCancel()
 	CloseHandle(this->hMemMap);
 	CloseHandle(this->hEvent);
 
-
 	CDialogEx::OnCancel();
 }
 
@@ -216,8 +210,6 @@ void CClientDlg::WaitForEvent() {
 void CClientDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
-	//WaitForSingleObject(this->hEvent, 100); 
-
 	std::string* pMessage = reinterpret_cast<std::string*>(this->mmap);
 	
 	std::string message;
@@ -229,10 +221,6 @@ void CClientDlg::OnTimer(UINT_PTR nIDEvent)
 		CString cstrMessage(message.c_str());
 		SetDlgItemText(IDC_EDIT_MESSAGE, cstrMessage);
 	}
-	//WaitForSingleObject(hEvent, 100);
-	
-	
-	
 
 	CDialogEx::OnTimer(nIDEvent);
 }

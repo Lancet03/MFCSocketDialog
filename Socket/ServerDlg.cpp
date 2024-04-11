@@ -185,23 +185,14 @@ void CServerDlg::OnEnChangeEditMessage()
 }
 
 
-void CServerDlg::OnBnClickedOk()
+void CServerDlg::OnBnClickedOk() //  нопка отправить
 {
-	//std::string message = (CStringA)"Hello";
-	//*((std::string*)(this->mmap)) = message;
-
-	//SetEvent(this->hEvent);
-	//
-	//GetDlgItemText(IDC_EDIT_MESSAGE, (LPWSTR)&m_message, 250);
-
+	// TODO: Add your control notification handler code here
 	std::string message = (CStringA)m_message;
 
 	*((std::string*)(this->mmap)) = message;
 
 	SetEvent(this->hEvent);
-
-	// TODO: Add your control notification handler code here
-	
 }
 
 
