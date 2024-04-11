@@ -1,11 +1,11 @@
 
-// SocketDlg.cpp : implementation file
+// ServerDlg.cpp : implementation file
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "Socket.h"
-#include "SocketDlg.h"
+#include "Server.h"
+#include "ServerDlg.h"
 #include "afxdialogex.h"
 
 #include <iostream>
@@ -51,35 +51,35 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CSocketDlg dialog
+// CServerDlg dialog
 
 
 
-CSocketDlg::CSocketDlg(CWnd* pParent /*=nullptr*/)
+CServerDlg::CServerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_SOCKET_DIALOG, pParent)
 	, m_message(_T("Send s"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CSocketDlg::DoDataExchange(CDataExchange* pDX)
+void CServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_MESSAGE, m_message);
 }
 
-BEGIN_MESSAGE_MAP(CSocketDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CServerDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_EN_CHANGE(IDC_EDIT_MESSAGE, &CSocketDlg::OnEnChangeEditMessage)
-	ON_BN_CLICKED(IDOK, &CSocketDlg::OnBnClickedOk)
+	ON_EN_CHANGE(IDC_EDIT_MESSAGE, &CServerDlg::OnEnChangeEditMessage)
+	ON_BN_CLICKED(IDOK, &CServerDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
-// CSocketDlg message handlers
+// CServerDlg message handlers
 
-BOOL CSocketDlg::OnInitDialog()
+BOOL CServerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -109,7 +109,7 @@ BOOL CSocketDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	this->hEvent = CreateEvent(NULL, TRUE, FALSE, L"TestEvent");
+	this->hEvent = CreateEvent(NULL, TRUE, FALSE, L"Event");
 	if (this->hEvent == NULL)
 	{
 		SetDlgItemText(IDC_EDIT_MESSAGE, _T("Error creating event"));
@@ -117,13 +117,13 @@ BOOL CSocketDlg::OnInitDialog()
 		return 0;
 	}
 
-	this->hMemMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 100, L"TestMMap");
+	this->hMemMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 100, L"MMap");
 	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096); // ѕочему-то нельз€ выставить значение больше, чем 4096
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void CSocketDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -140,7 +140,7 @@ void CSocketDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CSocketDlg::OnPaint()
+void CServerDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -167,14 +167,13 @@ void CSocketDlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CSocketDlg::OnQueryDragIcon()
+HCURSOR CServerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
 
-
-void CSocketDlg::OnEnChangeEditMessage()
+void CServerDlg::OnEnChangeEditMessage()
 {
 	// TODO:  If this is a RICHEDIT control, the control will not
 	// send this notification unless you override the CDialogEx::OnInitDialog()
@@ -186,7 +185,7 @@ void CSocketDlg::OnEnChangeEditMessage()
 }
 
 
-void CSocketDlg::OnBnClickedOk()
+void CServerDlg::OnBnClickedOk()
 {
 	//std::string message = (CStringA)"Hello";
 	//*((std::string*)(this->mmap)) = message;
@@ -206,7 +205,7 @@ void CSocketDlg::OnBnClickedOk()
 }
 
 
-void CSocketDlg::OnCancel()
+void CServerDlg::OnCancel()
 {
 	// TODO: Add your specialized code here and/or call the base class
 	UnmapViewOfFile(this->mmap);

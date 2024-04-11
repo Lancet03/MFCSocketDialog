@@ -24,6 +24,7 @@
     <Keyword>MFCProj</Keyword>
     <RootNamespace>Socket</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Server</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -186,8 +187,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="Socket.h" />
-    <ClInclude Include="SocketDlg.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="ServerDlg.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -197,17 +198,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="SocketDlg.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="ServerDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Socket.rc" />
+    <ResourceCompile Include="Server.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\Socket.rc2" />
+    <None Include="res\Server.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Socket.ico" />
+    <Image Include="res\Server.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

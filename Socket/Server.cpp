@@ -1,12 +1,12 @@
 
-// Socket.cpp : Defines the class behaviors for the application.
+// Server.cpp : Defines the class behaviors for the application.
 //
 #define WIN32_LEAN_AND_MEAN
 
 #include "pch.h"
 #include "framework.h"
-#include "Socket.h"
-#include "SocketDlg.h"
+#include "Server.h"
+#include "ServerDlg.h"
 
 
 #include <iostream>
@@ -19,15 +19,15 @@
 #endif
 
 
-// CSocketApp
+// CServerApp
 
-BEGIN_MESSAGE_MAP(CSocketApp, CWinApp)
+BEGIN_MESSAGE_MAP(CServerApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP();
 
-// CSocketApp construction
+// CServerApp construction
 
-CSocketApp::CSocketApp()
+CServerApp::CServerApp()
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -37,14 +37,14 @@ CSocketApp::CSocketApp()
 }
 
 
-// The one and only CSocketApp object
+// The one and only CServerApp object
 
-CSocketApp theApp;
+CServerApp theApp;
 
 
-// CSocketApp initialization
+// CServerApp initialization
 
-BOOL CSocketApp::InitInstance()
+BOOL CServerApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -77,7 +77,7 @@ BOOL CSocketApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CSocketDlg dlg;
+	CServerDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

@@ -1,16 +1,16 @@
 
-// SocketDlg.h : header file
+// ServerDlg.h : header file
 //
 
 #pragma once
 
 
-// CSocketDlg dialog
-class CSocketDlg : public CDialogEx
+// CServerDlg dialog
+class CServerDlg : public CDialogEx
 {
 // Construction
 public:
-	CSocketDlg(CWnd* pParent = nullptr);	// standard constructor
+	CServerDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

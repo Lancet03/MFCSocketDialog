@@ -116,7 +116,7 @@ BOOL CClientDlg::OnInitDialog()
 	//this->hMemMap = hMemMap;
 	//this->mmap = mmap;
 
-	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"TestEvent");
+	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"Event");
 	if (this->hEvent == NULL)
 	{
 		SetDlgItemText(IDC_EDIT_MESSAGE, _T("Error opening event"));
@@ -124,10 +124,8 @@ BOOL CClientDlg::OnInitDialog()
 		return 0;
 	}
 
-	this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"TestMMap");
+	this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"MMap");
 	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096);
-
-	SetDlgItemText(IDC_EDIT_MESSAGE, _T("Waiting event"));
 
 	this->m_timerID = SetTimer(1, 100, NULL);
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -181,8 +179,6 @@ HCURSOR CClientDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-
-
 
 void CClientDlg::OnEnChangeEditMessage()
 {

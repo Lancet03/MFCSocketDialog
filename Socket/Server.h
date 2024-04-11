@@ -1,5 +1,5 @@
 
-// Socket.h : main header file for the PROJECT_NAME application
+// Server.h : main header file for the PROJECT_NAME application
 //
 
 #pragma once
@@ -11,14 +11,14 @@
 #include "resource.h"		// main symbols
 
 
-// CSocketApp:
-// See Socket.cpp for the implementation of this class
+// CServerApp:
+// See Server.cpp for the implementation of this class
 //
 
-class CSocketApp : public CWinApp
+class CServerApp : public CWinApp
 {
 public:
-	CSocketApp();
+	CServerApp();
 
 // Overrides
 public:
@@ -29,4 +29,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CSocketApp theApp;
+extern CServerApp theApp;
