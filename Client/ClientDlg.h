@@ -35,4 +35,13 @@ public:
 	// Message from server
 	CString m_message;
 	afx_msg void OnEnChangeEditMessage();
+	HANDLE hEvent;
+	HANDLE hMemMap;
+	void* mmap;
+	virtual void OnCancel();
+	void WaitForEvent();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	int m_timerID;
+	// Timer of checking updates for text field
+	CEdit m_editTimer;
 };

@@ -36,4 +36,8 @@ public:
 	// Message to client
 	CString m_message;
 	afx_msg void OnBnClickedOk();
+	HANDLE hEvent;
+	HANDLE hMemMap;
+	void* mmap;
+	virtual void OnCancel();
 };

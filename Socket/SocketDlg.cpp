@@ -8,6 +8,11 @@
 #include "SocketDlg.h"
 #include "afxdialogex.h"
 
+#include <iostream>
+#include <Windows.h>
+#include <string>
+
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -104,6 +109,21 @@ BOOL CSocketDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	this->hEvent = CreateEvent(NULL, TRUE, FALSE, L"TestEvent");
+	if (this->hEvent == NULL)
+	{
+		SetDlgItemText(IDC_EDIT_MESSAGE, _T("Error creating event"));
+
+		return 0;
+	}
+
+	this->hMemMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 100, L"TestMMap");
+	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 250);
+
+	std::string message = (CStringA)"Hello";
+	*((std::string*)(this->mmap)) = message;
+
+	SetEvent(this->hEvent);
 
 	SetDlgItemText(IDC_EDIT_MESSAGE, _T("Init"));
 
@@ -174,7 +194,27 @@ void CSocketDlg::OnEnChangeEditMessage()
 
 void CSocketDlg::OnBnClickedOk()
 {
+	std::string message = (CStringA)"Hello";
+	*((std::string*)(this->mmap)) = message;
+
+	SetEvent(this->hEvent);
+	/*std::string message = CStringA(m_message);
+
+	*((std::string*)(this->mmap)) = message;
+
+	SetEvent(this->hEvent);*/
 
 	// TODO: Add your control notification handler code here
-	SetDlgItemText(IDC_EDIT_MESSAGE, _T("Hello from server"));
+	
+}
+
+
+void CSocketDlg::OnCancel()
+{
+	// TODO: Add your specialized code here and/or call the base class
+	UnmapViewOfFile(this->mmap);
+	CloseHandle(this->hMemMap);
+	CloseHandle(this->hEvent);
+
+	CDialogEx::OnCancel();
 }

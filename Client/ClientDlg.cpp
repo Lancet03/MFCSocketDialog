@@ -8,6 +8,10 @@
 #include "ClientDlg.h"
 #include "afxdialogex.h"
 
+#include <iostream>
+#include <Windows.h>
+#include <thread>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -61,6 +65,7 @@ void CClientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_MESSAGE, m_message);
+	DDX_Control(pDX, IDC_EDIT_MESSAGE, m_editTimer);
 }
 
 BEGIN_MESSAGE_MAP(CClientDlg, CDialogEx)
@@ -68,6 +73,7 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_EN_CHANGE(IDC_EDIT_MESSAGE, &CClientDlg::OnEnChangeEditMessage)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -103,7 +109,27 @@ BOOL CClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	
 
+
+	//this->hEvent = hEvent;
+	//this->hMemMap = hMemMap;
+	//this->mmap = mmap;
+
+	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"TestEvent");
+	if (this->hEvent == NULL)
+	{
+		SetDlgItemText(IDC_EDIT_MESSAGE, _T("Error opening event"));
+
+		return 0;
+	}
+
+	this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"TestMMap");
+	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 250);
+
+	SetDlgItemText(IDC_EDIT_MESSAGE, _T("Waiting event"));
+
+	this->m_timerID = SetTimer(1, 100, NULL);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -166,4 +192,51 @@ void CClientDlg::OnEnChangeEditMessage()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+
+void CClientDlg::OnCancel()
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	UnmapViewOfFile(this->mmap);
+	CloseHandle(this->hMemMap);
+	CloseHandle(this->hEvent);
+
+
+	CDialogEx::OnCancel();
+}
+
+void CClientDlg::WaitForEvent() {
+
+	std::string* pMessage = reinterpret_cast<std::string*>(this->mmap);
+	std::string message = *pMessage;
+
+	CString cstrMessage(message.c_str());
+	SetDlgItemText(IDC_EDIT_MESSAGE, cstrMessage);
+}
+
+
+void CClientDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+	//WaitForSingleObject(this->hEvent, 100); 
+
+	std::string* pMessage = reinterpret_cast<std::string*>(this->mmap);
+	
+	std::string message;
+	if (pMessage == nullptr) {
+		message = "";
+	}
+	else {
+		message = *pMessage;
+		CString cstrMessage(message.c_str());
+		SetDlgItemText(IDC_EDIT_MESSAGE, cstrMessage);
+	}
+	//WaitForSingleObject(hEvent, 100);
+	
+	
+	
+
+	CDialogEx::OnTimer(nIDEvent);
 }
