@@ -57,7 +57,7 @@ END_MESSAGE_MAP()
 
 CServerDlg::CServerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_SOCKET_DIALOG, pParent)
-	, m_message(_T("Send s"))
+	, m_message(_T("Message"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -117,7 +117,7 @@ BOOL CServerDlg::OnInitDialog()
 		return 0;
 	}
 
-	this->hMemMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 100, L"MMap");
+	this->hMemMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 4096, L"MMap");
 	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096); // ѕочему-то нельз€ выставить значение больше, чем 4096
 
 	return TRUE;  // return TRUE  unless you set the focus to a control

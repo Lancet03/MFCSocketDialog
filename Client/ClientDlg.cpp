@@ -115,7 +115,7 @@ BOOL CClientDlg::OnInitDialog()
 	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"Event");
 	if (this->hEvent == NULL)
 	{
-		SetDlgItemText(IDC_EDIT_MESSAGE, _T("Error opening event"));
+		SetDlgItemText(IDC_EDIT_MESSAGE, _T("ERROR: Server must be started first"));
 
 		return 0;
 	}
