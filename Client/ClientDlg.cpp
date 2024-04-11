@@ -125,7 +125,7 @@ BOOL CClientDlg::OnInitDialog()
 	}
 
 	this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"TestMMap");
-	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 250);
+	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096);
 
 	SetDlgItemText(IDC_EDIT_MESSAGE, _T("Waiting event"));
 

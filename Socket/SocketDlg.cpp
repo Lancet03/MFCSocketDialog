@@ -57,7 +57,7 @@ END_MESSAGE_MAP()
 
 CSocketDlg::CSocketDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_SOCKET_DIALOG, pParent)
-	, m_message(_T("Отправьте сообщение клиенту"))
+	, m_message(_T("Send s"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -118,14 +118,7 @@ BOOL CSocketDlg::OnInitDialog()
 	}
 
 	this->hMemMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 100, L"TestMMap");
-	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 250);
-
-	std::string message = (CStringA)"Hello";
-	*((std::string*)(this->mmap)) = message;
-
-	SetEvent(this->hEvent);
-
-	SetDlgItemText(IDC_EDIT_MESSAGE, _T("Init"));
+	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096); // Почему-то нельзя выставить значение больше, чем 4096
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -189,20 +182,24 @@ void CSocketDlg::OnEnChangeEditMessage()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+	GetDlgItemText(IDC_EDIT_MESSAGE, m_message);
 }
 
 
 void CSocketDlg::OnBnClickedOk()
 {
-	std::string message = (CStringA)"Hello";
+	//std::string message = (CStringA)"Hello";
+	//*((std::string*)(this->mmap)) = message;
+
+	//SetEvent(this->hEvent);
+	//
+	//GetDlgItemText(IDC_EDIT_MESSAGE, (LPWSTR)&m_message, 250);
+
+	std::string message = (CStringA)m_message;
+
 	*((std::string*)(this->mmap)) = message;
 
 	SetEvent(this->hEvent);
-	/*std::string message = CStringA(m_message);
-
-	*((std::string*)(this->mmap)) = message;
-
-	SetEvent(this->hEvent);*/
 
 	// TODO: Add your control notification handler code here
 	
