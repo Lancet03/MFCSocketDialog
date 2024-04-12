@@ -35,7 +35,7 @@ public:
 	afx_msg void OnEnChangeEditMessage();
 	// Message to client
 	CString m_message;
-	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedSend();
 	HANDLE hEvent;
 	HANDLE hMemMap;
 	void* mmap;

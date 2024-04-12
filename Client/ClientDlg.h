@@ -44,4 +44,5 @@ public:
 	int m_timerID;
 	// Timer of checking updates for text field
 	CEdit m_editTimer;
+	void InitializeServerConnection();
 };

@@ -73,7 +73,7 @@ BEGIN_MESSAGE_MAP(CServerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_EN_CHANGE(IDC_EDIT_MESSAGE, &CServerDlg::OnEnChangeEditMessage)
-	ON_BN_CLICKED(IDOK, &CServerDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDSEND, &CServerDlg::OnBnClickedSend)
 END_MESSAGE_MAP()
 
 
@@ -180,17 +180,18 @@ void CServerDlg::OnEnChangeEditMessage()
 	// function and call CRichEditCtrl().SetEventMask()
 	// with the ENM_CHANGE flag ORed into the mask.
 
-	// TODO:  Add your control notification handler code here
 	GetDlgItemText(IDC_EDIT_MESSAGE, m_message);
 }
 
 
-void CServerDlg::OnBnClickedOk() //  нопка отправить
+void CServerDlg::OnBnClickedSend() //  нопка отправить
 {
-	// TODO: Add your control notification handler code here
-	std::string message = (CStringA)m_message;
+	const wchar_t* buffer = m_message.GetString();
 
-	*((std::string*)(this->mmap)) = message;
+	int i;
+	for (i = 0; buffer[i] != '\0'; i++)
+		((wchar_t*)mmap)[i] = buffer[i];
+	((wchar_t*)mmap)[++i] = '\0';
 
 	SetEvent(this->hEvent);
 }
@@ -198,7 +199,6 @@ void CServerDlg::OnBnClickedOk() //  нопка отправить
 
 void CServerDlg::OnCancel()
 {
-	// TODO: Add your specialized code here and/or call the base class
 	UnmapViewOfFile(this->mmap);
 	CloseHandle(this->hMemMap);
 	CloseHandle(this->hEvent);

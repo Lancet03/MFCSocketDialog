@@ -109,19 +109,7 @@ BOOL CClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	
 	this->m_timerID = SetTimer(1, 100, NULL);
-
-	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"Event");
-	if (this->hEvent == NULL)
-	{
-		SetDlgItemText(IDC_EDIT_MESSAGE, _T("ERROR: Server must be started first"));
-
-		return 0;
-	}
-
-	this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"MMap");
-	this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096); // ѕочему-то нельз€ выставить значение больше, чем 4096
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -188,8 +176,6 @@ void CClientDlg::OnEnChangeEditMessage()
 
 void CClientDlg::OnCancel()
 {
-	// TODO: Add your specialized code here and/or call the base class
-
 	UnmapViewOfFile(this->mmap);
 	CloseHandle(this->hMemMap);
 	CloseHandle(this->hEvent);
@@ -209,18 +195,30 @@ void CClientDlg::WaitForEvent() {
 
 void CClientDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: Add your message handler code here and/or call default
-	std::string* pMessage = reinterpret_cast<std::string*>(this->mmap);
-	
-	std::string message;
-	if (pMessage == nullptr) {
-		message = "";
+	if (this->hEvent == NULL) {
+		this->InitializeServerConnection();
 	}
 	else {
-		message = *pMessage;
-		CString cstrMessage(message.c_str());
-		SetDlgItemText(IDC_EDIT_MESSAGE, cstrMessage);
+		CString message;
+		for (int i = 0; reinterpret_cast<const wchar_t*>(mmap)[i] != '\0'; i++)
+		{
+			message += reinterpret_cast<const wchar_t*>(mmap)[i];
+		}
+		SetDlgItemText(IDC_EDIT_MESSAGE, message);
 	}
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CClientDlg::InitializeServerConnection() {
+	this->hEvent = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"Event");
+	if (this->hEvent == NULL)
+	{
+		SetDlgItemText(IDC_EDIT_MESSAGE, _T("ќжидание сервера..."));
+	}
+	else {
+		this->hMemMap = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, L"MMap");
+		this->mmap = MapViewOfFile(this->hMemMap, FILE_MAP_ALL_ACCESS, 0, 0, 4096); // ѕочему-то нельз€ выставить значение больше, чем 4096
+	}
 }
